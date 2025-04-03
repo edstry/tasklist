@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponse login(JwtRequest loginRequest) {
         JwtResponse jwtResponse = new JwtResponse();
-        // Повысле вызова (.authenticate) перенаправляем Spring на JwtUserDetailService
+        // После вызова (.authenticate) перенаправляем Spring на JwtUserDetailService
         // метод loadUserByUsername(), проверит username, затем password
         // с помощью passwordEncoder, если всё хорошо, то пойдёт дальше
         // если нет то вернёт исключение.

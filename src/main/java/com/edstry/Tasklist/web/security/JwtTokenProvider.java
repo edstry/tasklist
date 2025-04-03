@@ -75,6 +75,7 @@ public class JwtTokenProvider {
     }
 
     public JwtResponse refreshUserTokens(String refreshToken) {
+        System.out.println(refreshToken);
         JwtResponse jwtResponse = new JwtResponse();
         if (!validateToken(refreshToken)) {
             throw new AccessDeniedException();
@@ -88,14 +89,14 @@ public class JwtTokenProvider {
         return jwtResponse;
     }
 
-    private String getId(String token) {
+    private Integer getId(String token) {
         return Jwts
                 .parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .get("id", String.class);
+                .get("id", Integer.class);
     }
 
     public boolean validateToken(String token) {

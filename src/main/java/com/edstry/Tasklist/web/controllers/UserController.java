@@ -12,6 +12,7 @@ import com.edstry.Tasklist.web.mappers.TaskMapper;
 import com.edstry.Tasklist.web.mappers.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,11 @@ public class UserController {
     private final TaskService taskService;
     private final UserMapper userMapper;
     private final TaskMapper taskMapper;
-
+    private final ModelMapper modelMapper;
 
     @PutMapping()
     public UserDTO update(@Validated(OnUpdate.class) @RequestBody UserDTO userDto) {
-        User user = userMapper.toEntity(userDto);
+        User user = modelMapper.map(userDto, User.class);
         User updatedUser = userService.update(user);
         return userMapper.toDto(updatedUser);
     }
@@ -51,6 +52,7 @@ public class UserController {
     @GetMapping("/{id}/tasks")
     public List<TaskDTO> getTasksByUserId(@PathVariable Long id) {
         List<Task> tasks = taskService.getAllByUserId(id);
+        //modelMapper.map(tasks, new TypeToken<List<UserDTO>>(){}.getType());
         return taskMapper.toDto(tasks);
     }
 

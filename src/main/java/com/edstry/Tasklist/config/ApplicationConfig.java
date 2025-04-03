@@ -3,9 +3,11 @@ package com.edstry.Tasklist.config;
 import com.edstry.Tasklist.web.security.JwtTokenFilter;
 import com.edstry.Tasklist.web.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -20,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Lazy)) //
 public class ApplicationConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -37,6 +39,11 @@ public class ApplicationConfig {
     }
 
     @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -48,11 +55,11 @@ public class ApplicationConfig {
                 .exceptionHandling(configurer -> configurer
                         .authenticationEntryPoint(((request, response, authException) -> {
                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                            response.getWriter().write("Unauthorized.");
+                            response.getWriter().write("EntryPoint error. Unauthorized. " + authException.getMessage());
                         }))
                         .accessDeniedHandler(((request, response, accessDeniedException) -> {
                             response.setStatus(HttpStatus.FORBIDDEN.value());
-                            response.getWriter().write("Unauthorized.");
+                            response.getWriter().write("Access denied. Unauthorized. " + accessDeniedException.getMessage());
                         }))
                 )
                 .authorizeHttpRequests(configurer ->
