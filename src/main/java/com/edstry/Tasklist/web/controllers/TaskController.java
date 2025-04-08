@@ -34,6 +34,7 @@ public class TaskController {
     @PutMapping()
     public TaskDTO update(@Validated(OnUpdate.class) @RequestBody TaskDTO taskDto) {
         Task task = taskMapper.toEntity(taskDto);
+        System.out.println(task);
         Task updatedTask = taskService.update(task);
         return taskMapper.toDto(updatedTask);
     }

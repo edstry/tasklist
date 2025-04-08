@@ -83,8 +83,8 @@ public class TaskRepositoryImpl implements TaskRepository {
         try {
             Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(ASSIGN);
-            statement.setLong(1, taskId);
-            statement.setLong(2, userId);
+            statement.setLong(1, userId);
+            statement.setLong(2, taskId);
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -114,7 +114,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                 statement.setString(2, task.getDescription());
             }
             if(task.getExpirationDate() == null) {
-                statement.setNull(3, Types.VARCHAR);
+                statement.setNull(3, Types.TIMESTAMP);
             } else {
                 statement.setTimestamp(3, Timestamp.valueOf(task.getExpirationDate()));
             }
