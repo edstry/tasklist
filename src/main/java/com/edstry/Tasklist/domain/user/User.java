@@ -15,5 +15,5 @@ public class User {
     private String password;
     private String passwordConfirmation;
     private Set<Role> roles;
-    private List<Task> task;
+    private List<Task> tasks;
 }

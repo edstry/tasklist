@@ -5,6 +5,8 @@ import com.edstry.Tasklist.service.TaskService;
 import com.edstry.Tasklist.web.dto.task.TaskDTO;
 import com.edstry.Tasklist.web.dto.validation.OnUpdate;
 import com.edstry.Tasklist.web.mappers.TaskMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +17,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/tasks")
 @AllArgsConstructor
 @Validated
+@Tag(name = "Task Controller", description = "Task API")
 public class TaskController {
 
     private final TaskService taskService;
     private final TaskMapper taskMapper;
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get task by id")
     public TaskDTO getById(@PathVariable Long id) {
         Task task = taskService.getById(id);
         return taskMapper.toDto(task);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete task by id")
     public void delete(@PathVariable Long id) {
         taskService.delete(id);
     }
 
     @PutMapping()
+    @Operation(summary = "Update task")
     public TaskDTO update(@Validated(OnUpdate.class) @RequestBody TaskDTO taskDto) {
         Task task = taskMapper.toEntity(taskDto);
         System.out.println(task);

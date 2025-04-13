@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - includeAll:
+      path: /changesets
+      relativeToChangelogFile: true
+# Тут объявляем все ченджсеты, которые будут выполняться в директории /changesets
+# ченджсетс - набор файлов, в которых есть какой то sql скрипт, который будет выполняться при старте

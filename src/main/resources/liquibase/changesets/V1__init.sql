@@ -1,5 +1,3 @@
-create schema if not exists tasklist_scheme;
-
 create table if not exists users
 (
     id       bigserial primary key,

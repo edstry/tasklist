@@ -1,12 +1,11 @@
 package com.edstry.Tasklist.web.controllers;
 
-import com.edstry.Tasklist.domain.exception.AccessDeniedException;
-import com.edstry.Tasklist.domain.exception.ExceptionBody;
-import com.edstry.Tasklist.domain.exception.ResourceMappingException;
-import com.edstry.Tasklist.domain.exception.ResourceNotFoundException;
+import com.edstry.Tasklist.domain.exception.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class AdviceController {
-
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -41,7 +39,7 @@ public class AdviceController {
     @ExceptionHandler({AccessDeniedException.class, org.springframework.security.access.AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ExceptionBody handleAccessDenied() {
-        return new ExceptionBody("Access denies");
+        return new ExceptionBody("Access denied");
     }
 
     // Отлов ошибки валидации контроллеров
@@ -73,7 +71,13 @@ public class AdviceController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
-        return new ExceptionBody("Internal Error");
+        return new ExceptionBody(e.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleAuthentication() {
+        return new ExceptionBody("Authentication failed...");
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.Optional;
 PreparedStatement собирается и вызывается уже с сопоставленными значениями
  */
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 public class TaskRepositoryImpl implements TaskRepository {
 
@@ -35,7 +35,7 @@ public class TaskRepositoryImpl implements TaskRepository {
                            t.status          as task_status,
                            t.expiration_date as task_expiration_date
                     FROM tasks t
-                    WHERE id = ?
+                    WHERE t.id = ?
                     """;
         try {
             Connection connection = dataSourceConfig.getConnection();

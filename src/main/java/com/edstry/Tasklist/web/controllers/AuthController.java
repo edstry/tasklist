@@ -10,6 +10,7 @@ import com.edstry.Tasklist.web.dto.user.UserDTO;
 import com.edstry.Tasklist.web.dto.validation.OnCreate;
 import com.edstry.Tasklist.web.dto.validation.OnUpdate;
 import com.edstry.Tasklist.web.mappers.UserMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "Auth Controller", description = "Auth API")
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
