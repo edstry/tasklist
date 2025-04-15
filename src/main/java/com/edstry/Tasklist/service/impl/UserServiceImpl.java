@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     })
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.update(user);
+        userRepository.save(user);
         return user;
     }
 
@@ -65,9 +65,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Password and password confirmation do not match");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.create(user); // на этом моменте у юзера есть id
-        userRepository.insertUserRole(user.getId(), Role.ROLE_USER);
-        user.setRoles(Set.of(Role.ROLE_USER)); // сохраняем роль в объект, чтобы вернуть его
+        user.setRoles(Set.of(Role.ROLE_USER));
+        userRepository.save(user);
         return user;
     }
 
@@ -82,6 +81,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @CacheEvict(value = "UserService::getById", key = "#id")
     public void delete(Long id) {
-        userRepository.delete(id);
+        userRepository.deleteById(id);
     }
 }

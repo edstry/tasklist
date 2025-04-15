@@ -7,11 +7,6 @@ import org.mapstruct.*;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface TaskMapper {
-    @BeanMapping(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-    TaskDTO toDto(Task task);
-    @BeanMapping(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-    List<TaskDTO> toDto(List<Task> tasks);
-    @BeanMapping(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-    Task toEntity(TaskDTO taskDTO);
+public interface TaskMapper extends Mappable<Task, TaskDTO> {
+
 }

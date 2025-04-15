@@ -71,15 +71,18 @@ public class AdviceController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleException(Exception e) {
-        e.printStackTrace();
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleAuthentication(AuthenticationException e) {
-        e.printStackTrace();
         return new ExceptionBody("Authentication failed... " + e.getMessage());
     }
 
+    @ExceptionHandler(ImageUploadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUpload(ImageUploadException e) {
+        return new ExceptionBody(e.getMessage());
+    }
 }

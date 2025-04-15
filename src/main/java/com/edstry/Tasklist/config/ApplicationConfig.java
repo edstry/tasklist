@@ -1,8 +1,10 @@
 package com.edstry.Tasklist.config;
 
+import com.edstry.Tasklist.service.properties.MinioProperties;
 import com.edstry.Tasklist.web.security.JwtTokenFilter;
 import com.edstry.Tasklist.web.security.JwtTokenProvider;
 import com.edstry.Tasklist.web.security.expression.variant_2.CustomSecurityExceptionHandler;
+import io.minio.MinioClient;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -39,10 +41,19 @@ public class ApplicationConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ApplicationContext applicationContext;
+    private final MinioProperties minioProperties;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public MinioClient minioClient() {
+        return MinioClient.builder()
+                .endpoint(minioProperties.getUrl())
+                .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
+                .build();
     }
 
     // Второй способ security expression(сложный)

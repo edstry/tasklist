@@ -1,15 +1,16 @@
 package com.edstry.Tasklist.web.controllers;
 
 import com.edstry.Tasklist.domain.task.Task;
+import com.edstry.Tasklist.domain.task.TaskImage;
 import com.edstry.Tasklist.service.TaskService;
 import com.edstry.Tasklist.web.dto.task.TaskDTO;
+import com.edstry.Tasklist.web.dto.task.TaskImageDTO;
 import com.edstry.Tasklist.web.dto.validation.OnUpdate;
+import com.edstry.Tasklist.web.mappers.TaskImageMapper;
 import com.edstry.Tasklist.web.mappers.TaskMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class TaskController {
 
     private final TaskService taskService;
     private final TaskMapper taskMapper;
+    private final TaskImageMapper taskImageMapper;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get task by id")
@@ -47,5 +49,13 @@ public class TaskController {
         System.out.println(task);
         Task updatedTask = taskService.update(task);
         return taskMapper.toDto(updatedTask);
+    }
+
+    @PostMapping("/{id}/image")
+    @Operation(summary = "Upload image to task")
+    @PreAuthorize("canAccessTask(#id)")
+    public void uploadImage(@PathVariable Long id, @Validated @ModelAttribute TaskImageDTO imageDto) {
+        TaskImage image = taskImageMapper.toEntity(imageDto);
+        taskService.uploadImage(id, image);
     }
 }
